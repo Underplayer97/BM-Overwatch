@@ -1,40 +1,27 @@
 package net.underplayer97.BMOverwatch.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class Experiment333Entity extends EntityMob implements IAnimatable {
-    AnimationFactory factory = new AnimationFactory(this);
+
+public class Experiment333Entity extends EntityCreature {
 
     public Experiment333Entity(World worldIn) {
         super(worldIn);
     }
 
+    @Override
+    protected void initEntityAI() {
+        this.tasks.addTask(1, new EntityAIWatchClosest(this, EntityPlayer.class, 1.0F));
+    }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller",
-                20, this::predicate));
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
+
     }
-
-    private <P extends IAnimatable>PlayState predicate(AnimationEvent<P> event) {
-        return PlayState.CONTINUE;
-    }
-
-
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
 }

@@ -108,11 +108,6 @@ repositories {
         url 'https://maven.cleanroommc.com'
     }
 
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-    }
-
 }
 
 dependencies {
@@ -150,9 +145,6 @@ dependencies {
         testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
         testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
-
-    implementation 'software.bernie.geckolib:geckolib-forge-1.12.2:3.0.31'
-
 }
 
 apply from: 'gradle/scripts/dependencies.gradle'
