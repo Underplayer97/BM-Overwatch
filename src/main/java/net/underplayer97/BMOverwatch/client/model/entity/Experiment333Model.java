@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 
 
 @SuppressWarnings("rawtypes")
@@ -28,6 +29,8 @@ public class Experiment333Model extends ModelBase {
     private final ModelRenderer Left_Leg;
     private final ModelRenderer UpperLegL_r1;
     private final ModelRenderer LowerLegL;
+
+    public boolean isCarrying;
 
     public Experiment333Model() {
         textureWidth = 128;
@@ -149,14 +152,39 @@ public class Experiment333Model extends ModelBase {
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        Experiment333Model.render(f5);
+    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch ,scale, entity);
+        Experiment333Model.render(scale);
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
+
     }
 
+    @Override
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+
+        //Head
+        this.h_head.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.h_head.rotateAngleX = headPitch * 0.017453292F;
+
+        //Arms
+
+        float f = 1.0F;
+
+        this.Left_Arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / f;
+        this.Right_Arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 2.0F * limbSwingAmount * 0.5F / f;
+
+
+        //Legs
+        this.Right_Leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
+        this.Left_Leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount * 0.5F;
+        this.Right_Leg.rotateAngleY = 0.0F;
+        this.Left_Leg.rotateAngleY = 0.0F;
+
+    }
 }
